@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: madr
+  datasource:
+    url: jdbc:mysql://localhost:3306/madr?createDatabaseIfNotExist=true
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+jwt:
+  expiration: ${EXPIRATION_JWT}
+  key: ${JWT_KEY}
