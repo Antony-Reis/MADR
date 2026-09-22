@@ -22,13 +22,13 @@ public class NovelistController {
     public Page<NovelistEntity> getNovelists(
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "10") Integer size){
-        return novelistService.ListAllPage(page, size);
+        return novelistService.listAllPage(page, size);
     }
 
     @GetMapping("/byId/{id}")
     @ResponseStatus(HttpStatus.OK)
     public NovelistEntity getNovelist(@PathVariable Integer id)throws  BadRequestException{
-        return novelistService.GetPerId(id);
+        return novelistService.getPerId(id);
     }
 
     @GetMapping("/byName/{name}")
@@ -36,18 +36,24 @@ public class NovelistController {
     public Page<NovelistEntity> getNovelistsByName(@PathVariable String name,
                                                    @RequestParam(defaultValue = "0") Integer page,
                                                    @RequestParam(defaultValue = "10") Integer size){
-        return novelistService.ListPerName(name, page, size);
+        return novelistService.listPerName(name, page, size);
     }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public void postNovelist(@RequestBody @Valid NovelistDto body) throws BadRequestException {
-        novelistService.CreateNovelist(body);
+        novelistService.createNovelist(body);
+    }
+
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void patchNovelist(@PathVariable Integer id, @RequestBody @Valid NovelistDto body) throws BadRequestException{
+        novelistService.patchNovelist(body, id);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteNovelist(@PathVariable Integer id){
-        novelistService.DeleteNovelist(id);
+        novelistService.deleteNovelist(id);
     }
 }

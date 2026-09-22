@@ -15,7 +15,7 @@ public class NovelistService {
         this.novelistRepository = novelistRepository;
     }
 
-    public Page<NovelistEntity> ListAllPage(Integer page, Integer size){
+    public Page<NovelistEntity> listAllPage(Integer page, Integer size){
         Pageable pageable;
         if (size < 20){
                 pageable = Pageable.unpaged();
@@ -25,7 +25,7 @@ public class NovelistService {
         return novelistRepository.findAll(pageable);
     }
 
-    public NovelistEntity GetPerId(Integer id) throws BadRequestException{
+    public NovelistEntity getPerId(Integer id) throws BadRequestException{
         NovelistEntity novelist = novelistRepository.findById(id).orElse(null);
         if (novelist == null){
             throw new BadRequestException("Novelsit dont exists");
@@ -33,7 +33,7 @@ public class NovelistService {
         return novelist;
     }
 
-    public Page<NovelistEntity> ListPerName(String name,Integer page, Integer size){
+    public Page<NovelistEntity> listPerName(String name,Integer page, Integer size){
         Pageable pageable;
         if (size < 20){
             pageable = Pageable.unpaged();
@@ -44,7 +44,7 @@ public class NovelistService {
         return novelistRepository.findByNameStartingWith(name, pageable);
     }
 
-    public void CreateNovelist(NovelistDto novelistDto) throws BadRequestException {
+    public void createNovelist(NovelistDto novelistDto) throws BadRequestException {
         String novelistTrimLower = novelistDto.getName().trim().toLowerCase();
         novelistDto.setName(novelistTrimLower);
 
@@ -56,7 +56,19 @@ public class NovelistService {
         novelistRepository.save(new NovelistEntity(novelistDto.getName()));
     }
 
-    public void DeleteNovelist(Integer id){
+    public void deleteNovelist(Integer id){
         novelistRepository.deleteById(id);
+    }
+
+    public void patchNovelist(NovelistDto novelistDto, Integer id) throws BadRequestException{
+        NovelistEntity novelist = novelistRepository.findById(id).orElse(null);
+        if (novelist == null) {
+            throw new BadRequestException("Novelsit dont exists");
+        }
+
+        if (novelistDto.getName() != null) {
+            novelist.setName(novelistDto.getName());
+        }
+        novelistRepository.save(novelist);
     }
 }
