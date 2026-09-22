@@ -1,6 +1,10 @@
 package com.antony.madr.novelist;
 
+import com.antony.madr.book.BookEntity;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "novelist")
@@ -12,6 +16,9 @@ public class NovelistEntity {
 
     @Column(name = "name")
     private String name;
+
+    @OneToMany(mappedBy = "novelist", fetch = FetchType.LAZY)
+    private Set<BookEntity> books = new HashSet<>();
 
     public NovelistEntity() {
     }
@@ -30,5 +37,9 @@ public class NovelistEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<BookEntity> getBooks() {
+        return books;
     }
 }
