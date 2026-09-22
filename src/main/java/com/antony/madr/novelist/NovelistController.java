@@ -17,14 +17,6 @@ public class NovelistController {
         this.novelistService = novelistService;
     }
 
-    @GetMapping()
-    @ResponseStatus(HttpStatus.OK)
-    public Page<NovelistEntity> getNovelists(
-            @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer size){
-        return novelistService.listAllPage(page, size);
-    }
-
     @GetMapping("/byId/{id}")
     @ResponseStatus(HttpStatus.OK)
     public NovelistEntity getNovelist(@PathVariable Integer id)throws  BadRequestException{

@@ -12,6 +12,5 @@ public interface INovelistRepository extends JpaRepository<NovelistEntity, Integ
 
     Page<NovelistEntity> findByNameStartingWith(String name, Pageable pageable);
 
-
 }
 

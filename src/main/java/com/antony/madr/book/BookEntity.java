@@ -24,12 +24,12 @@ public class BookEntity {
     public BookEntity() {
     }
 
-    public BookEntity(Integer id, String title, Integer year, NovelistEntity novelist) {
-        this.id = id;
+    public BookEntity(String title, Integer year, NovelistEntity novelist) {
         this.title = title;
         this.year = year;
         this.novelist = novelist;
     }
+
 
     public Integer getId() {
         return id;
