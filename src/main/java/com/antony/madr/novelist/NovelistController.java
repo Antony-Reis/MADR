@@ -41,13 +41,13 @@ public class NovelistController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public void postNovelist(@RequestBody @Valid NovelistDto body) throws BadRequestException {
+    public void postNovelist(@RequestBody @Valid RNovelistDto body) throws BadRequestException {
         novelistService.createNovelist(body);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void patchNovelist(@PathVariable Integer id, @RequestBody @Valid NovelistDto body) throws BadRequestException{
+    public void patchNovelist(@PathVariable Integer id, @RequestBody @Valid RNovelistDto body) throws BadRequestException{
         novelistService.patchNovelist(body, id);
     }
 

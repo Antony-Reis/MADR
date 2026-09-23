@@ -44,30 +44,30 @@ public class NovelistService {
         return novelistRepository.findByNameStartingWith(name, pageable);
     }
 
-    public void createNovelist(NovelistDto novelistDto) throws BadRequestException {
-        String novelistTrimLower = novelistDto.getName().trim().toLowerCase();
-        novelistDto.setName(novelistTrimLower);
+    public void createNovelist(RNovelistDto RNovelistDto) throws BadRequestException {
+        String nameNovelistTrimLower = RNovelistDto.name().trim().toLowerCase();
+        RNovelistDto = new RNovelistDto(nameNovelistTrimLower);
 
-        NovelistEntity novelist = novelistRepository.findByName(novelistDto.getName()).orElse(null);
+        NovelistEntity novelist = novelistRepository.findByName(RNovelistDto.name()).orElse(null);
 
         if (novelist != null) {
             throw new BadRequestException("Novelist already exists!");
         }
-        novelistRepository.save(new NovelistEntity(novelistDto.getName()));
+        novelistRepository.save(new NovelistEntity(RNovelistDto.name()));
     }
 
     public void deleteNovelist(Integer id){
         novelistRepository.deleteById(id);
     }
 
-    public void patchNovelist(NovelistDto novelistDto, Integer id) throws BadRequestException{
+    public void patchNovelist(RNovelistDto RNovelistDto, Integer id) throws BadRequestException{
         NovelistEntity novelist = novelistRepository.findById(id).orElse(null);
         if (novelist == null) {
             throw new BadRequestException("Novelsit dont exists");
         }
 
-        if (novelistDto.getName() != null) {
-            novelist.setName(novelistDto.getName());
+        if (RNovelistDto.name() != null) {
+            novelist.setName(RNovelistDto.name());
         }
         novelistRepository.save(novelist);
     }
