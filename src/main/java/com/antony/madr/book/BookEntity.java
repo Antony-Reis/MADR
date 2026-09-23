@@ -11,14 +11,14 @@ public class BookEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
     @Column
     private Integer year;
 
     @ManyToOne
-    @JoinColumn(name = "novelist_id")
+    @JoinColumn(name = "novelist_id", nullable = true)
     private NovelistEntity novelist;
 
     public BookEntity() {
@@ -53,5 +53,9 @@ public class BookEntity {
 
     public NovelistEntity getNovelist() {
         return novelist;
+    }
+
+    public void setNovelist(NovelistEntity novelist) {
+        this.novelist = novelist;
     }
 }

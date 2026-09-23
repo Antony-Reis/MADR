@@ -1,5 +1,6 @@
 package com.antony.madr.novelist;
 
+import com.antony.madr.assets.RDefaultResponse;
 import jakarta.validation.Valid;
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
@@ -19,13 +20,13 @@ public class NovelistController {
 
     @GetMapping("/byId/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public NovelistEntity getNovelist(@PathVariable Integer id)throws  BadRequestException{
+    public RNovelistResponseDto getNovelist(@PathVariable Integer id)throws  BadRequestException{
         return novelistService.getPerId(id);
     }
 
     @GetMapping("/byName/{name}")
     @ResponseStatus(HttpStatus.OK)
-    public Page<NovelistEntity> getNovelistsByName(@PathVariable String name,
+    public Page<RNovelistResponseDto> getNovelistsByName(@PathVariable String name,
                                                    @RequestParam(defaultValue = "0") Integer page,
                                                    @RequestParam(defaultValue = "10") Integer size){
         return novelistService.listPerName(name, page, size);
@@ -33,19 +34,19 @@ public class NovelistController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public void postNovelist(@RequestBody @Valid RNovelistDto body) throws BadRequestException {
-        novelistService.createNovelist(body);
+    public RDefaultResponse postNovelist(@RequestBody @Valid RNovelistDto body) throws BadRequestException {
+        return novelistService.createNovelist(body);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void patchNovelist(@PathVariable Integer id, @RequestBody @Valid RNovelistDto body) throws BadRequestException{
-        novelistService.patchNovelist(body, id);
+    public RDefaultResponse patchNovelist(@PathVariable Integer id, @RequestBody @Valid RNovelistDto body) throws BadRequestException{
+        return novelistService.patchNovelist(body, id);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteNovelist(@PathVariable Integer id){
-        novelistService.deleteNovelist(id);
+    public RDefaultResponse deleteNovelist(@PathVariable Integer id) throws BadRequestException {
+        return novelistService.deleteNovelist(id);
     }
 }

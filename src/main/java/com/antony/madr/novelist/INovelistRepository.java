@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface INovelistRepository extends JpaRepository<NovelistEntity, Integer> {
     Optional<NovelistEntity> findByName(String name);
 
-    Page<NovelistEntity> findByNameStartingWith(String name, Pageable pageable);
+    Page<NovelistEntity> findByNameContaining(String name, Pageable pageable);
 
 }
 

@@ -17,7 +17,7 @@ public class NovelistEntity {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "novelist", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "novelist", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = false)
     private Set<BookEntity> books = new HashSet<>();
 
     public NovelistEntity() {
