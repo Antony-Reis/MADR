@@ -15,16 +15,6 @@ public class NovelistService {
         this.novelistRepository = novelistRepository;
     }
 
-    public Page<NovelistEntity> listAllPage(Integer page, Integer size){
-        Pageable pageable;
-        if (size < 20){
-                pageable = Pageable.unpaged();
-        } else {
-            pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-        }
-        return novelistRepository.findAll(pageable);
-    }
-
     public NovelistEntity getPerId(Integer id) throws BadRequestException{
         NovelistEntity novelist = novelistRepository.findById(id).orElse(null);
         if (novelist == null){
