@@ -1,6 +1,6 @@
 package com.antony.madr.novelist;
 
-import com.antony.madr.assets.RDefaultResponse;
+import com.antony.madr.utils.RDefaultResponse;
 import jakarta.validation.Valid;
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;

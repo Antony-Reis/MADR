@@ -1,6 +1,6 @@
 package com.antony.madr.book;
 
-import com.antony.madr.assets.RDefaultResponse;
+import com.antony.madr.utils.RDefaultResponse;
 import com.antony.madr.novelist.INovelistRepository;
 import com.antony.madr.novelist.NovelistEntity;
 import org.apache.coyote.BadRequestException;

@@ -1,4 +1,4 @@
-package com.antony.madr.assets;
+package com.antony.madr.utils;
 
 import org.springframework.boot.context.properties.bind.DefaultValue;
 

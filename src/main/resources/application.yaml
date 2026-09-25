@@ -9,6 +9,12 @@ spring:
     hibernate:
       ddl-auto: update
 
-jwt:
-  expiration: ${EXPIRATION_JWT}
-  key: ${JWT_KEY}
+api:
+  security:
+    token:
+      secret: ${JWT_KEY:my_secret_key}
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE

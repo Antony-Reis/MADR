@@ -23,12 +23,12 @@ public class UsersEntity implements UserDetails {
     private String password;
 
     @Column(nullable = false)
-    private UserRoles role;
+    private EUserRoles role;
 
     public UsersEntity() {
     }
 
-    public UsersEntity(String username, String password, UserRoles role) {
+    public UsersEntity(String username, String password, EUserRoles role) {
         this.username = username;
         this.password = password;
         this.role = role;
@@ -62,17 +62,17 @@ public class UsersEntity implements UserDetails {
         this.username = username;
     }
 
-    public UserRoles getRole() {
+    public EUserRoles getRole() {
         return role;
     }
 
-    public void setRole(UserRoles role) {
+    public void setRole(EUserRoles role) {
         this.role = role;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role == UserRoles.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role == EUserRoles.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
         else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
