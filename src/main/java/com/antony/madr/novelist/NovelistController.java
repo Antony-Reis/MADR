@@ -1,5 +1,7 @@
 package com.antony.madr.novelist;
 
+import com.antony.madr.infra.exceptions.ConflictException;
+import com.antony.madr.infra.exceptions.NotFoundException;
 import com.antony.madr.utils.RDefaultResponse;
 import jakarta.validation.Valid;
 import org.apache.coyote.BadRequestException;
@@ -20,7 +22,7 @@ public class NovelistController {
 
     @GetMapping("/byId/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public RNovelistResponseDto getNovelist(@PathVariable Integer id)throws  BadRequestException{
+    public RNovelistResponseDto getNovelist(@PathVariable Integer id)throws NotFoundException {
         return novelistService.getPerId(id);
     }
 
@@ -34,19 +36,19 @@ public class NovelistController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public RDefaultResponse postNovelist(@RequestBody @Valid RNovelistDto body) throws BadRequestException {
+    public RDefaultResponse postNovelist(@RequestBody @Valid RNovelistDto body) throws ConflictException {
         return novelistService.createNovelist(body);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public RDefaultResponse patchNovelist(@PathVariable Integer id, @RequestBody @Valid RNovelistDto body) throws BadRequestException{
+    public RDefaultResponse patchNovelist(@PathVariable Integer id, @RequestBody @Valid RNovelistDto body) throws NotFoundException{
         return novelistService.patchNovelist(body, id);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public RDefaultResponse deleteNovelist(@PathVariable Integer id) throws BadRequestException {
+    public RDefaultResponse deleteNovelist(@PathVariable Integer id) throws NotFoundException {
         return novelistService.deleteNovelist(id);
     }
 }

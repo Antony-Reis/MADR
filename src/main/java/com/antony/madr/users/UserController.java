@@ -29,4 +29,6 @@ public class UserController {
     public RDefaultResponse registerUser(@RequestBody @Valid RUserRegisterDto body) throws BadRequestException {
     return userService.registerUser(body);
     }
+
+
 }

@@ -1,5 +1,8 @@
 package com.antony.madr.book;
 
+import com.antony.madr.infra.exceptions.ConflictException;
+import com.antony.madr.infra.exceptions.EExceptionsTypes;
+import com.antony.madr.infra.exceptions.NotFoundException;
 import com.antony.madr.utils.RDefaultResponse;
 import com.antony.madr.novelist.INovelistRepository;
 import com.antony.madr.novelist.NovelistEntity;
@@ -11,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.Year;
+import java.util.Locale;
 import java.util.Set;
 
 @Service
@@ -23,43 +27,47 @@ public class BookService {
         this.iNovelistRepository = iNovelistRepository;
     }
 
-    public RDefaultResponse createBook(RBookDto bookDto) throws BadRequestException {
-        Integer year = Year.now().getValue();
+    public RDefaultResponse createBook(RBookDto bookDto) throws ConflictException, NotFoundException {
+        Integer yearNow = Year.now().getValue();
 
-        if (bookDto.year() > year){
-            throw new BadRequestException("Book year inst valid");
+        if (bookDto.year() > yearNow){
+            bookDto = new RBookDto(bookDto.novelistId(), bookDto.title().trim().toLowerCase(), yearNow);
         }
 
         NovelistEntity novelist = iNovelistRepository.findById(bookDto.novelistId())
-                .orElseThrow(() -> new BadRequestException("Novelist dont exits"));
+                .orElseThrow(() -> new NotFoundException(EExceptionsTypes.Novelist));
         Set<BookEntity> bookEntity = novelist.getBooks();
-         boolean bookExits = bookEntity.stream()
-                 .anyMatch(book -> book.getTitle().equalsIgnoreCase(bookDto.title()));
+
+        RBookDto finalBookDto = bookDto;
+        boolean bookExits = bookEntity.stream()
+                 .anyMatch(book -> book.getTitle().equalsIgnoreCase(finalBookDto.title()));
 
          if (bookExits){
-             throw new BadRequestException("This novelist already has a book with this title.");
+             throw new ConflictException(EExceptionsTypes.Book);
          }
          ibookRepository.save(new BookEntity(bookDto.title(),bookDto.year(), novelist));
 
          return new RDefaultResponse("Book created");
     }
-    public RDefaultResponse deleteBook(Integer id){
-        ibookRepository.deleteById(id);
+    public RDefaultResponse deleteBook(Integer id) throws NotFoundException{
+        BookEntity book = ibookRepository.findById(id).orElseThrow(() -> new NotFoundException(EExceptionsTypes.Book));
+
+        ibookRepository.deleteById(book.getId());
         return new RDefaultResponse("Book deleted");
     }
 
-    public RBookResponseDto getBookById(Integer id) throws BadRequestException {
+    public RBookResponseDto getBookById(Integer id) throws NotFoundException {
         BookEntity book = ibookRepository.findById(id).orElse(null);
         if (book == null){
-            throw new BadRequestException("Book dont exists");
+            throw new NotFoundException(EExceptionsTypes.Book);
         }
         return new RBookResponseDto(book);
     }
 
-    public Page<RBookResponseDto> listBookByNameAndYear(Integer page, Integer size, String title, Integer year) throws BadRequestException {
+    public Page<RBookResponseDto> listBookByNameAndYear(Integer page, Integer size, String title, Integer year) {
         Integer yearNow = Year.now().getValue();
         if (year> yearNow) {
-        throw new BadRequestException("Year inst valid");
+        year = yearNow;
         }
         Pageable pageable;
         if (size < 20){
@@ -72,10 +80,10 @@ public class BookService {
         return books.map(RBookResponseDto::new);
     }
 
-    public RDefaultResponse patchBookById(Integer id, RBookDto bookDto) throws BadRequestException {
+    public RDefaultResponse patchBookById(Integer id, RBookDto bookDto) throws NotFoundException {
         BookEntity book = ibookRepository.findById(id).orElse(null);
         if (book == null) {
-            throw new BadRequestException("Book dont exists");
+            throw new NotFoundException(EExceptionsTypes.Book);
         }
 
         if (bookDto.title() != null) {

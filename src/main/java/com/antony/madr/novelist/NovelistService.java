@@ -1,5 +1,8 @@
 package com.antony.madr.novelist;
 
+import com.antony.madr.infra.exceptions.ConflictException;
+import com.antony.madr.infra.exceptions.EExceptionsTypes;
+import com.antony.madr.infra.exceptions.NotFoundException;
 import com.antony.madr.utils.RDefaultResponse;
 import com.antony.madr.book.BookEntity;
 import org.apache.coyote.BadRequestException;
@@ -17,10 +20,10 @@ public class NovelistService {
         this.novelistRepository = novelistRepository;
     }
 
-    public RNovelistResponseDto getPerId(Integer id) throws BadRequestException{
+    public RNovelistResponseDto getPerId(Integer id) throws NotFoundException{
         NovelistEntity novelist = novelistRepository.findById(id).orElse(null);
         if (novelist == null){
-            throw new BadRequestException("Novelsit dont exists");
+            throw new NotFoundException(EExceptionsTypes.Novelist);
         }
         return new RNovelistResponseDto(novelist);
     }
@@ -37,24 +40,24 @@ public class NovelistService {
         return novelists.map(RNovelistResponseDto::new);
     }
 
-    public RDefaultResponse createNovelist(RNovelistDto RNovelistDto) throws BadRequestException {
+    public RDefaultResponse createNovelist(RNovelistDto RNovelistDto) throws ConflictException {
         String nameNovelistTrimLower = RNovelistDto.name().trim().toLowerCase();
         RNovelistDto = new RNovelistDto(nameNovelistTrimLower);
 
         NovelistEntity novelist = novelistRepository.findByName(RNovelistDto.name()).orElse(null);
 
         if (novelist != null) {
-            throw new BadRequestException("Novelist already exists!");
+            throw new ConflictException(EExceptionsTypes.Novelist);
         }
         novelistRepository.save(new NovelistEntity(RNovelistDto.name()));
 
         return new RDefaultResponse("Novelist create");
     }
 
-    public RDefaultResponse deleteNovelist(Integer id) throws BadRequestException{
+    public RDefaultResponse deleteNovelist(Integer id) throws NotFoundException{
         NovelistEntity novelist = novelistRepository.findById(id).orElse(null);
         if (novelist == null){
-            throw new BadRequestException("Novelist dont exists");
+            throw new NotFoundException(EExceptionsTypes.Novelist);
         }
         for (BookEntity book : novelist.getBooks()){
             book.setNovelist(null);
@@ -65,10 +68,10 @@ public class NovelistService {
         return new RDefaultResponse("Novelist deleted");
     }
 
-    public RDefaultResponse patchNovelist(RNovelistDto novelistDto, Integer id) throws BadRequestException{
+    public RDefaultResponse patchNovelist(RNovelistDto novelistDto, Integer id) throws NotFoundException{
         NovelistEntity novelist = novelistRepository.findById(id).orElse(null);
         if (novelist == null) {
-            throw new BadRequestException("Novelsit dont exists");
+            throw new NotFoundException(EExceptionsTypes.Novelist);
         }
 
         if (novelistDto.name() != null) {
