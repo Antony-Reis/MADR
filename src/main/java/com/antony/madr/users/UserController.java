@@ -2,6 +2,7 @@ package com.antony.madr.users;
 
 
 import com.antony.madr.infra.exceptions.ConflictException;
+import com.antony.madr.infra.exceptions.NotFoundException;
 import com.antony.madr.infra.security.AuthService;
 import com.antony.madr.utils.RDefaultResponse;
 import jakarta.validation.Valid;
@@ -34,5 +35,15 @@ public class UserController {
     return userService.registerUser(body);
     }
 
+    @DeleteMapping("/deleteByUsername/{username}")
+    @ResponseStatus(HttpStatus.OK)
+    public RDefaultResponse deleteByUsername(@PathVariable String username) throws NotFoundException {
+        return userService.deleteUser(username);
+    }
 
+    @PatchMapping("/patchPasswordByUsername/{username}")
+    @ResponseStatus(HttpStatus.OK)
+    public RDefaultResponse patchPassworByUsername(@PathVariable String username, @Valid RUserDto body) throws NotFoundException {
+        return userService.patchPassworByUsername(username, body);
+    }
 }
