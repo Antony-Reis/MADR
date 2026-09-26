@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -51,7 +52,7 @@ public class NovelistService {
         }
         novelistRepository.save(new NovelistEntity(RNovelistDto.name()));
 
-        return new RDefaultResponse("Novelist create");
+        return new RDefaultResponse(HttpStatus.CREATED,"Novelist create");
     }
 
     public RDefaultResponse deleteNovelist(Integer id) throws NotFoundException{
@@ -65,7 +66,7 @@ public class NovelistService {
         novelist.getBooks().clear();
 
         novelistRepository.delete(novelist);
-        return new RDefaultResponse("Novelist deleted");
+        return new RDefaultResponse(HttpStatus.OK,"Novelist deleted");
     }
 
     public RDefaultResponse patchNovelist(RNovelistDto novelistDto, Integer id) throws NotFoundException{
@@ -78,6 +79,6 @@ public class NovelistService {
             novelist.setName(novelistDto.name());
         }
         novelistRepository.save(novelist);
-        return new RDefaultResponse("Novelist updated");
+        return new RDefaultResponse(HttpStatus.OK,"Novelist updated");
     }
 }

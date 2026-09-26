@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Year;
@@ -47,13 +48,13 @@ public class BookService {
          }
          ibookRepository.save(new BookEntity(bookDto.title(),bookDto.year(), novelist));
 
-         return new RDefaultResponse("Book created");
+         return new RDefaultResponse(HttpStatus.CREATED,"Book created");
     }
     public RDefaultResponse deleteBook(Integer id) throws NotFoundException{
         BookEntity book = ibookRepository.findById(id).orElseThrow(() -> new NotFoundException(EExceptionsTypes.Book));
 
         ibookRepository.deleteById(book.getId());
-        return new RDefaultResponse("Book deleted");
+        return new RDefaultResponse(HttpStatus.OK,"Book deleted");
     }
 
     public RBookResponseDto getBookById(Integer id) throws NotFoundException {
@@ -98,7 +99,7 @@ public class BookService {
 
         ibookRepository.save(book);
 
-        return new RDefaultResponse("Book updated");
+        return new RDefaultResponse(HttpStatus.OK,"Book updated");
     }
 
 }

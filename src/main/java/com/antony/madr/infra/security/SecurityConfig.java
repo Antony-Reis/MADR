@@ -24,13 +24,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity){
-        return httpSecurity.csrf(csfr -> csfr.disable()).
-                authorizeHttpRequests(authorize -> authorize
+        return httpSecurity.csrf(csfr -> csfr.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/v1/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/v1/books").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/v1/novelist").hasRole("ADMIN").requestMatchers("/error").permitAll().anyRequest().authenticated())
+                        .requestMatchers(HttpMethod.GET, "/v1/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/error").permitAll()
+                        .anyRequest().hasRole("ADMIN")
+                )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).build();
+                .build();
 
 
     }
