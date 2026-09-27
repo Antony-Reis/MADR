@@ -27,7 +27,7 @@ public class TokenService {
 
             return token;
         } catch (JWTCreationException exception){
-            throw new RuntimeException("Error while generaring token", exception);
+            throw new RuntimeException("Error while generating token", exception);
         }
     }
 

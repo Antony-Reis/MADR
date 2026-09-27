@@ -51,7 +51,7 @@ public class NovelistService {
         }
         novelistRepository.save(new NovelistEntity(RNovelistDto.name()));
 
-        return new RDefaultResponse(HttpStatus.CREATED,"Novelist create");
+        return new RDefaultResponse(HttpStatus.CREATED,"Novelist created successfully");
     }
 
     public RDefaultResponse deleteNovelist(Integer id) throws NotFoundException{
@@ -65,7 +65,7 @@ public class NovelistService {
         novelist.getBooks().clear();
 
         novelistRepository.delete(novelist);
-        return new RDefaultResponse(HttpStatus.OK,"Novelist deleted");
+        return new RDefaultResponse(HttpStatus.OK,"Novelist deleted successfully");
     }
 
     public RDefaultResponse patchNovelist(RNovelistDto novelistDto, Integer id) throws NotFoundException{
@@ -78,6 +78,6 @@ public class NovelistService {
             novelist.setName(novelistDto.name());
         }
         novelistRepository.save(novelist);
-        return new RDefaultResponse(HttpStatus.OK,"Novelist updated");
+        return new RDefaultResponse(HttpStatus.OK,"Novelist updated successfully");
     }
 }

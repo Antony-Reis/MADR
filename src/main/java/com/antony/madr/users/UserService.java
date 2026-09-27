@@ -36,14 +36,14 @@ public class UserService implements UserDetailsService {
 
         iUserRepository.save(new UsersEntity(body.username(), encryptedPassword, body.role()));
 
-        return new RDefaultResponse(HttpStatus.OK,"Successful register");
+        return new RDefaultResponse(HttpStatus.OK,"User registered successfully");
     }
 
     public RDefaultResponse deleteUser(String username) throws NotFoundException {
         try {
         UserDetails user = iUserRepository.findByUsername(username);
         iUserRepository.delete((UsersEntity) user);
-            return new RDefaultResponse(HttpStatus.OK, "User updated");
+            return new RDefaultResponse(HttpStatus.OK, "User deleted successfully");
         }
         catch (NotFoundException ex){
             throw new NotFoundException(EExceptionsRolesTypes.User);
@@ -59,7 +59,7 @@ public class UserService implements UserDetailsService {
                 user.setPassword(encryptedPassword);
             }
             iUserRepository.save(user);
-            return new RDefaultResponse(HttpStatus.OK, "Password updated");}
+            return new RDefaultResponse(HttpStatus.OK, "Password updated successfully");}
 
         catch (NotFoundException ex){
             throw new NotFoundException(EExceptionsRolesTypes.User);

@@ -46,13 +46,13 @@ public class BookService {
          }
          ibookRepository.save(new BookEntity(bookDto.title(),bookDto.year(), novelist));
 
-         return new RDefaultResponse(HttpStatus.CREATED,"Book created");
+         return new RDefaultResponse(HttpStatus.CREATED,"Book created successfully");
     }
     public RDefaultResponse deleteBook(Integer id) throws NotFoundException{
         BookEntity book = ibookRepository.findById(id).orElseThrow(() -> new NotFoundException(EExceptionsRolesTypes.Book));
 
         ibookRepository.deleteById(book.getId());
-        return new RDefaultResponse(HttpStatus.OK,"Book deleted");
+        return new RDefaultResponse(HttpStatus.OK,"Book deleted successfully");
     }
 
     public RBookResponseDto getBookById(Integer id) throws NotFoundException {
@@ -97,7 +97,7 @@ public class BookService {
 
         ibookRepository.save(book);
 
-        return new RDefaultResponse(HttpStatus.OK,"Book updated");
+        return new RDefaultResponse(HttpStatus.OK,"Book updated successfully");
     }
 
 }
