@@ -1,13 +1,13 @@
 package com.antony.madr.infra.exceptions;
 
-public enum EExceptionsTypes {
+public enum EExceptionsRolesTypes {
     Novelist("Novelist"),
     Book("Book"),
     User("User");
 
     private String type;
 
-    EExceptionsTypes(String type) {
+    EExceptionsRolesTypes(String type) {
         this.type = type;
     }
 

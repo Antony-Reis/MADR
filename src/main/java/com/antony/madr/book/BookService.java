@@ -1,12 +1,11 @@
 package com.antony.madr.book;
 
 import com.antony.madr.infra.exceptions.ConflictException;
-import com.antony.madr.infra.exceptions.EExceptionsTypes;
+import com.antony.madr.infra.exceptions.EExceptionsRolesTypes;
 import com.antony.madr.infra.exceptions.NotFoundException;
 import com.antony.madr.utils.RDefaultResponse;
 import com.antony.madr.novelist.INovelistRepository;
 import com.antony.madr.novelist.NovelistEntity;
-import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Year;
-import java.util.Locale;
 import java.util.Set;
 
 @Service
@@ -36,7 +34,7 @@ public class BookService {
         }
 
         NovelistEntity novelist = iNovelistRepository.findById(bookDto.novelistId())
-                .orElseThrow(() -> new NotFoundException(EExceptionsTypes.Novelist));
+                .orElseThrow(() -> new NotFoundException(EExceptionsRolesTypes.Novelist));
         Set<BookEntity> bookEntity = novelist.getBooks();
 
         RBookDto finalBookDto = bookDto;
@@ -44,14 +42,14 @@ public class BookService {
                  .anyMatch(book -> book.getTitle().equalsIgnoreCase(finalBookDto.title()));
 
          if (bookExits){
-             throw new ConflictException(EExceptionsTypes.Book);
+             throw new ConflictException(EExceptionsRolesTypes.Book);
          }
          ibookRepository.save(new BookEntity(bookDto.title(),bookDto.year(), novelist));
 
          return new RDefaultResponse(HttpStatus.CREATED,"Book created");
     }
     public RDefaultResponse deleteBook(Integer id) throws NotFoundException{
-        BookEntity book = ibookRepository.findById(id).orElseThrow(() -> new NotFoundException(EExceptionsTypes.Book));
+        BookEntity book = ibookRepository.findById(id).orElseThrow(() -> new NotFoundException(EExceptionsRolesTypes.Book));
 
         ibookRepository.deleteById(book.getId());
         return new RDefaultResponse(HttpStatus.OK,"Book deleted");
@@ -60,7 +58,7 @@ public class BookService {
     public RBookResponseDto getBookById(Integer id) throws NotFoundException {
         BookEntity book = ibookRepository.findById(id).orElse(null);
         if (book == null){
-            throw new NotFoundException(EExceptionsTypes.Book);
+            throw new NotFoundException(EExceptionsRolesTypes.Book);
         }
         return new RBookResponseDto(book);
     }
@@ -84,7 +82,7 @@ public class BookService {
     public RDefaultResponse patchBookById(Integer id, RBookDto bookDto) throws NotFoundException {
         BookEntity book = ibookRepository.findById(id).orElse(null);
         if (book == null) {
-            throw new NotFoundException(EExceptionsTypes.Book);
+            throw new NotFoundException(EExceptionsRolesTypes.Book);
         }
 
         if (bookDto.title() != null) {

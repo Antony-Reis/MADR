@@ -13,8 +13,3 @@ api:
   security:
     token:
       secret: ${JWT_KEY:my_secret_key}
-logging:
-  level:
-    org:
-      springframework:
-        security: TRACE

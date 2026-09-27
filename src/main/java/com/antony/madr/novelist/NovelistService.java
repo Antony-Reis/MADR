@@ -1,11 +1,10 @@
 package com.antony.madr.novelist;
 
 import com.antony.madr.infra.exceptions.ConflictException;
-import com.antony.madr.infra.exceptions.EExceptionsTypes;
+import com.antony.madr.infra.exceptions.EExceptionsRolesTypes;
 import com.antony.madr.infra.exceptions.NotFoundException;
 import com.antony.madr.utils.RDefaultResponse;
 import com.antony.madr.book.BookEntity;
-import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +23,7 @@ public class NovelistService {
     public RNovelistResponseDto getPerId(Integer id) throws NotFoundException{
         NovelistEntity novelist = novelistRepository.findById(id).orElse(null);
         if (novelist == null){
-            throw new NotFoundException(EExceptionsTypes.Novelist);
+            throw new NotFoundException(EExceptionsRolesTypes.Novelist);
         }
         return new RNovelistResponseDto(novelist);
     }
@@ -48,7 +47,7 @@ public class NovelistService {
         NovelistEntity novelist = novelistRepository.findByName(RNovelistDto.name()).orElse(null);
 
         if (novelist != null) {
-            throw new ConflictException(EExceptionsTypes.Novelist);
+            throw new ConflictException(EExceptionsRolesTypes.Novelist);
         }
         novelistRepository.save(new NovelistEntity(RNovelistDto.name()));
 
@@ -58,7 +57,7 @@ public class NovelistService {
     public RDefaultResponse deleteNovelist(Integer id) throws NotFoundException{
         NovelistEntity novelist = novelistRepository.findById(id).orElse(null);
         if (novelist == null){
-            throw new NotFoundException(EExceptionsTypes.Novelist);
+            throw new NotFoundException(EExceptionsRolesTypes.Novelist);
         }
         for (BookEntity book : novelist.getBooks()){
             book.setNovelist(null);
@@ -72,7 +71,7 @@ public class NovelistService {
     public RDefaultResponse patchNovelist(RNovelistDto novelistDto, Integer id) throws NotFoundException{
         NovelistEntity novelist = novelistRepository.findById(id).orElse(null);
         if (novelist == null) {
-            throw new NotFoundException(EExceptionsTypes.Novelist);
+            throw new NotFoundException(EExceptionsRolesTypes.Novelist);
         }
 
         if (novelistDto.name() != null) {

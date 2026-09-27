@@ -1,8 +1,7 @@
 package com.antony.madr.users;
 
-import com.antony.madr.users.RUserDto;
 import com.antony.madr.infra.exceptions.ConflictException;
-import com.antony.madr.infra.exceptions.EExceptionsTypes;
+import com.antony.madr.infra.exceptions.EExceptionsRolesTypes;
 import com.antony.madr.infra.exceptions.NotFoundException;
 import com.antony.madr.utils.RDefaultResponse;
 import org.springframework.http.HttpStatus;
@@ -31,7 +30,7 @@ public class UserService implements UserDetailsService {
 
     public RDefaultResponse registerUser(RUserRegisterDto body) throws ConflictException {
         if (iUserRepository.findByUsername(body.username()) != null) {
-            throw new ConflictException(EExceptionsTypes.User);}
+            throw new ConflictException(EExceptionsRolesTypes.User);}
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(body.password());
 
@@ -47,7 +46,7 @@ public class UserService implements UserDetailsService {
             return new RDefaultResponse(HttpStatus.OK, "User updated");
         }
         catch (NotFoundException ex){
-            throw new NotFoundException(EExceptionsTypes.User);
+            throw new NotFoundException(EExceptionsRolesTypes.User);
         }
 
         }
@@ -63,7 +62,7 @@ public class UserService implements UserDetailsService {
             return new RDefaultResponse(HttpStatus.OK, "Password updated");}
 
         catch (NotFoundException ex){
-            throw new NotFoundException(EExceptionsTypes.User);
+            throw new NotFoundException(EExceptionsRolesTypes.User);
         }
     }
 
